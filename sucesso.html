@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento PIX | Consulta Médica Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--azul:#1a3a4a;--verde:#2a7a5a;--ouro:#c8a96e;--creme:#faf8f5;--borda:#e0e4ea;--cinza:#6b7280}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--creme);min-height:100vh;display:flex;flex-direction:column}
+    header{background:var(--azul);padding:16px 24px;text-align:center}
+    .logo{font-family:'Playfair Display',serif;color:#fff;font-size:17px;text-decoration:none;display:inline-block}
+    .logo span{color:var(--ouro)}
+    .steps-bar{background:#fff;border-bottom:1px solid var(--borda);padding:14px 24px}
+    .steps-inner{max-width:600px;margin:0 auto;display:flex;align-items:center}
+    .si{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--cinza)}
+    .sn{width:26px;height:26px;border-radius:50%;border:2px solid var(--borda);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500}
+    .si.feito .sn{background:var(--verde);border-color:var(--verde);color:#fff}
+    .si.feito .sl{color:var(--verde)}
+    .si.ativo .sn{background:var(--azul);border-color:var(--azul);color:#fff}
+    .si.ativo .sl{color:var(--azul);font-weight:500}
+    .ss{flex:1;height:1px;background:var(--borda);margin:0 12px}
+    main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:40px 24px}
+    .card{background:#fff;border:1px solid var(--borda);border-radius:20px;padding:40px;width:100%;max-width:500px;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+    @media(max-width:560px){.card{padding:24px 18px}}
+    .vtopo{text-align:center;margin-bottom:24px}
+    .vtopo h1{font-family:'Playfair Display',serif;font-size:21px;color:var(--azul);margin-bottom:5px}
+    .vval{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--verde);line-height:1}
+    .vval sup{font-size:20px;vertical-align:top;margin-top:12px;display:inline-block}
+    .vlbl{color:var(--cinza);font-size:12px;margin-top:3px}
+    .qr-area{display:flex;flex-direction:column;align-items:center;margin-bottom:18px}
+    .qr-frame{border:3px solid var(--azul);border-radius:14px;padding:14px;background:#fff;display:inline-block}
+    .qr-frame img{width:190px;height:190px;display:block}
+    .qr-ph{width:190px;height:190px;background:#f3f4f6;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--cinza);font-size:12px;text-align:center;padding:20px}
+    .qr-erro{width:190px;min-height:100px;background:#fef2f2;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#dc2626;font-size:12px;text-align:center;padding:16px;line-height:1.5}
+    .instr{font-size:12px;color:var(--cinza);text-align:center;line-height:1.7;margin:12px 0 16px}
+    .instr strong{color:var(--azul)}
+    .cc{background:#f8fafc;border:1.5px solid var(--borda);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+    .cc-lbl{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--cinza);margin-bottom:5px}
+    .cc-code{font-size:11px;color:#374151;word-break:break-all;line-height:1.5;font-family:monospace;max-height:50px;overflow:hidden}
+    .btn-cp{width:100%;padding:12px;border:2px solid var(--azul);background:transparent;color:var(--azul);border-radius:100px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s,color .2s;margin-bottom:18px}
+    .btn-cp:hover,.btn-cp.ok{background:var(--azul);color:#fff}
+    .sbox{border-radius:10px;padding:18px;text-align:center;background:#fffbeb;border:1px solid #fde68a}
+    .sbox.ok{background:#f0fdf4;border-color:#86efac}
+    .sico{font-size:28px;margin-bottom:6px}
+    .stxt{font-weight:500;color:var(--azul);margin-bottom:3px;font-size:14px}
+    .ssub{font-size:12px;color:var(--cinza)}
+    .pulsar{display:inline-block;width:9px;height:9px;background:#f59e0b;border-radius:50%;margin-right:7px;animation:pu 1.2s ease-in-out infinite}
+    @keyframes pu{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+    .expira{font-size:11px;color:var(--cinza);text-align:center;margin-top:12px}
+    .expira strong{color:var(--azul)}
+    .timer-expirado{color:#dc2626!important}
+    .sandbox{background:#fefce8;border:1.5px dashed #eab308;border-radius:10px;padding:16px;margin-top:16px;text-align:center}
+    .sandbox p{font-size:12px;color:#854d0e;margin-bottom:10px;line-height:1.5}
+    .btn-sim{background:#eab308;color:#1c1917;border:none;padding:10px 24px;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:opacity .2s}
+    .btn-sim:hover{opacity:.85}
+    .btn-sim:disabled{opacity:.5;cursor:not-allowed}
+    footer{text-align:center;padding:20px;font-size:12px;color:var(--cinza)}
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">Dr. <span>Saúde</span> Online</a>
+</header>
+
+<div class="steps-bar">
+  <div class="steps-inner">
+    <div class="si feito"><div class="sn">✓</div><span class="sl">Dados</span></div>
+    <div class="ss"></div>
+    <div class="si ativo"><div class="sn">2</div><span class="sl">Pagamento</span></div>
+    <div class="ss"></div>
+    <div class="si"><div class="sn">3</div><span class="sl">Acesso</span></div>
+  </div>
+</div>
+
+<main>
+<div class="card">
+  <div class="vtopo">
+    <h1>Pague com PIX</h1>
+    <div class="vval"><sup>R$</sup>99<sup>,90</sup></div>
+    <div class="vlbl">Consulta médica online · pagamento único</div>
+  </div>
+
+  <div class="qr-area">
+    <div class="qr-frame">
+      {% if pagamento.qr_code_img %}
+        <img src="data:image/png;base64,{{ pagamento.qr_code_img }}" alt="QR Code PIX">
+      {% elif pagamento.qr_code_payload and pagamento.qr_code_payload|length > 30 %}
+        <div class="qr-ph">
+          <span style="font-size:36px">📲</span>
+          <span>Use o código<br>Copia e Cola abaixo</span>
+        </div>
+      {% else %}
+        <div class="qr-erro">
+          <span style="font-size:26px">⚠️</span>
+          <span><strong>QR Code indisponível</strong><br>Use o botão Simular abaixo para testar, ou verifique a chave PIX na conta Asaas.</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <p class="instr">
+    Abra o app do banco → <strong>Pagar com PIX</strong><br>
+    Escaneie o QR Code ou copie o código abaixo
+  </p>
+
+  <div class="cc">
+    <div class="cc-lbl">PIX Copia e Cola</div>
+    <div class="cc-code" id="pixCode">{{ pagamento.qr_code_payload or "Aguardando geração do código..." }}</div>
+  </div>
+
+  <button class="btn-cp" id="btnCp" onclick="copiar()">📋 Copiar código PIX</button>
+
+  <div class="sbox" id="sbox">
+    <div class="sico">⏳</div>
+    <div class="stxt"><span class="pulsar"></span>Aguardando pagamento...</div>
+    <div class="ssub">Confirmação automática após o PIX ser realizado</div>
+  </div>
+
+  <!-- Timer calculado a partir do horário de criação — não reseta no reload -->
+  <p class="expira" id="expiraLinha">⏱ Código expira em <strong id="timer">--:--</strong></p>
+
+  {% if sandbox %}
+  <div class="sandbox">
+    <p>🧪 <strong>Modo Sandbox — Testes</strong><br>
+    Nenhuma cobrança real. Simule o pagamento para ver o fluxo completo.</p>
+    <button class="btn-sim" id="btnSim" onclick="simular()">✅ Simular Pagamento Aprovado</button>
+  </div>
+  {% endif %}
+</div>
+</main>
+
+<footer>Pagamento processado via Asaas · © 2025 Dr. Saúde Online</footer>
+
+<script>
+const PID = {{ pagamento.id }};
+// Data de criação vinda do servidor (UTC) — garante que o timer não reseta no reload
+const CRIADO_EM = new Date("{{ pagamento.criado_em.strftime('%Y-%m-%dT%H:%M:%S') }}Z");
+const EXPIRA_EM_SEG = 5 * 60; // 5 minutos
+
+function copiar(){
+  const txt = document.getElementById('pixCode').textContent.trim();
+  navigator.clipboard.writeText(txt).then(()=>{
+    const b = document.getElementById('btnCp');
+    b.textContent = '✅ Copiado!'; b.classList.add('ok');
+    setTimeout(()=>{ b.textContent='📋 Copiar código PIX'; b.classList.remove('ok'); }, 3000);
+  });
+}
+
+// Timer baseado no tempo real decorrido desde a criação
+function atualizarTimer(){
+  const agora = new Date();
+  const decorrido = Math.floor((agora - CRIADO_EM) / 1000);
+  const restante  = EXPIRA_EM_SEG - decorrido;
+  const tel = document.getElementById('timer');
+
+  if(restante <= 0){
+    tel.textContent = 'Expirado';
+    tel.parentElement.querySelector('strong').className = 'timer-expirado';
+    clearInterval(timerInt);
+    return;
+  }
+  const m = Math.floor(restante / 60).toString().padStart(2,'0');
+  const s = (restante % 60).toString().padStart(2,'0');
+  tel.textContent = m + ':' + s;
+}
+
+atualizarTimer(); // executa imediatamente
+const timerInt = setInterval(atualizarTimer, 1000);
+
+// Polling status
+async function verificar(){
+  try{
+    const r = await fetch(`/status/${PID}`);
+    const d = await r.json();
+    if(d.status === 'aprovado'){
+      clearInterval(pollingInt);
+      clearInterval(timerInt);
+      const b = document.getElementById('sbox');
+      b.className = 'sbox ok';
+      b.innerHTML = '<div class="sico">✅</div><div class="stxt">Pagamento confirmado!</div><div class="ssub">Redirecionando...</div>';
+      setTimeout(()=>{ window.location.href = d.redirect; }, 1500);
+    }
+  }catch(e){}
+}
+const pollingInt = setInterval(verificar, 4000);
+verificar();
+
+// Simular (sandbox)
+async function simular(){
+  const b = document.getElementById('btnSim');
+  b.disabled = true; b.textContent = 'Processando...';
+  try{
+    const r = await fetch(`/dev/simular/${PID}`, {method:'POST'});
+    const d = await r.json();
+    if(d.ok){
+      clearInterval(pollingInt); clearInterval(timerInt);
+      const sb = document.getElementById('sbox');
+      sb.className = 'sbox ok';
+      sb.innerHTML = '<div class="sico">✅</div><div class="stxt">Simulado com sucesso!</div><div class="ssub">Redirecionando...</div>';
+      setTimeout(()=>{ window.location.href = d.redirect; }, 1200);
+    }
+  }catch(e){ b.disabled=false; b.textContent='✅ Simular Pagamento Aprovado'; }
+}
+</script>
+</body>
+</html>

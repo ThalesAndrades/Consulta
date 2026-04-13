@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consulta Médica Online | R$99,90</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --azul:   #1a3a4a;
+      --verde:  #2a7a5a;
+      --verde-l:#e8f5f0;
+      --ouro:   #c8a96e;
+      --creme:  #faf8f5;
+      --cinza:  #6b7280;
+      --borda:  #e5e7eb;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: #1c1c1e; line-height: 1.6; }
+
+    .hero { background: linear-gradient(160deg, var(--azul) 0%, #0f2535 100%); padding: 0 24px; position: relative; overflow: hidden; }
+    .hero::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff' fill-opacity='.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E"); }
+
+    /* NAV — logo centralizada */
+    .nav { max-width:1000px; margin:0 auto; padding:28px 0 0; text-align:center; }
+    .nav-logo { font-family:'Playfair Display',serif; color:#fff; font-size:18px; letter-spacing:.3px; }
+    .nav-logo span { color:var(--ouro); }
+
+    /* HERO INNER — espaçamentos uniformes entre cada elemento */
+    .hero-inner {
+      max-width:680px;
+      margin:0 auto;
+      padding:28px 0 40px;   /* mesmo espaço em cima e em baixo */
+      text-align:center;
+      position:relative;
+      z-index:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:20px;              /* espaçamento igual entre TODOS os elementos */
+    }
+
+    .badge {
+      display:inline-block;
+      background:rgba(200,169,110,.15);
+      border:1px solid rgba(200,169,110,.4);
+      color:var(--ouro);
+      padding:6px 18px;
+      border-radius:100px;
+      font-size:12px;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+    }
+
+    h1 {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(28px,4.5vw,46px);
+      font-weight:700;
+      color:#fff;
+      line-height:1.22;
+    }
+    /* "Atestado Incluso" em dourado, o resto branco */
+    h1 .destaque { color:var(--ouro); }
+    /* asterisco pequeníssimo, quase invisível */
+    h1 sup { font-size:11px; color:rgba(200,169,110,.5); vertical-align:super; }
+
+    .hero-sub {
+      font-size:clamp(14px,2vw,16px);
+      color:rgba(255,255,255,.68);
+      max-width:500px;
+      font-weight:300;
+      line-height:1.75;
+    }
+
+    /* Preço E botão empilhados verticalmente, centralizados */
+    .preco-bloco {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:16px;
+    }
+    .preco-de  { font-size:13px; color:rgba(255,255,255,.38); text-decoration:line-through; margin-bottom:-10px; }
+    .preco-por { font-family:'Playfair Display',serif; font-size:clamp(44px,7vw,56px); font-weight:700; color:#fff; line-height:1; }
+    .preco-por sup.rs   { font-size:22px; vertical-align:top; margin-top:10px; display:inline-block; }
+    .preco-por sup.cts  { font-size:22px; vertical-align:top; margin-top:10px; display:inline-block; }
+    .preco-pix { font-size:12px; color:rgba(255,255,255,.4); margin-top:-6px; }
+
+    .btn-cta {
+      display:inline-block;
+      background:linear-gradient(135deg,#2a7a5a,#1e5e43);
+      color:#fff;
+      font-size:clamp(15px,2vw,17px);
+      font-weight:500;
+      padding:17px 44px;
+      border-radius:100px;
+      text-decoration:none;
+      box-shadow:0 6px 24px rgba(42,122,90,.4);
+      transition:transform .2s,box-shadow .2s;
+      border:none;
+      cursor:pointer;
+      font-family:'DM Sans',sans-serif;
+    }
+    .btn-cta:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(42,122,90,.5); }
+
+    .garantia { font-size:12px; color:rgba(255,255,255,.38); }
+    .nota-legal { font-size:11px; color:rgba(255,255,255,.2); line-height:1.5; }
+
+    /* SELOS */
+    .selos { background:#fff; border-bottom:1px solid var(--borda); }
+    .selos-inner { max-width:900px; margin:0 auto; padding:22px 24px; display:flex; flex-wrap:wrap; justify-content:center; gap:24px; }
+    .selo { display:flex; align-items:center; gap:8px; color:var(--cinza); font-size:13px; font-weight:500; }
+    .selo-icon { width:32px; height:32px; background:var(--verde-l); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; }
+
+    /* BENEFÍCIOS */
+    .secao { max-width:900px; margin:0 auto; padding:64px 24px; }
+    .sec-titulo { font-family:'Playfair Display',serif; font-size:clamp(22px,3.5vw,34px); color:var(--azul); text-align:center; margin-bottom:8px; }
+    .sec-sub    { text-align:center; color:var(--cinza); font-size:14px; margin-bottom:44px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; }
+    .card { background:#fff; border:1px solid var(--borda); border-radius:16px; padding:26px 22px; transition:box-shadow .2s,transform .2s; }
+    .card:hover { box-shadow:0 6px 24px rgba(0,0,0,.07); transform:translateY(-2px); }
+    .card-icon { font-size:28px; margin-bottom:10px; }
+    .card h3   { font-family:'Playfair Display',serif; font-size:17px; color:var(--azul); margin-bottom:6px; }
+    .card p    { color:var(--cinza); font-size:13px; line-height:1.7; }
+
+    /* COMO FUNCIONA */
+    .como { background:var(--azul); padding:64px 24px; }
+    .como-inner { max-width:900px; margin:0 auto; }
+    .como .sec-titulo { color:#fff; }
+    .como .sec-sub    { color:rgba(255,255,255,.6); }
+    .steps { display:flex; flex-wrap:wrap; }
+    .step  { flex:1 1 200px; text-align:center; padding:24px 16px; }
+    .step-n { width:46px; height:46px; border-radius:50%; background:var(--ouro); color:var(--azul); font-family:'Playfair Display',serif; font-size:20px; font-weight:700; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; }
+    .step h4 { color:#fff; font-size:14px; margin-bottom:4px; font-weight:500; }
+    .step p  { color:rgba(255,255,255,.55); font-size:12px; line-height:1.6; }
+
+    /* CTA FINAL */
+    .cta-final { background:var(--verde-l); border-top:1px solid #c5e8d8; border-bottom:1px solid #c5e8d8; padding:64px 24px; text-align:center; }
+    .cta-final .sec-titulo { margin-bottom:12px; }
+    .cta-final p { color:var(--cinza); margin-bottom:28px; max-width:460px; margin-left:auto; margin-right:auto; font-size:15px; }
+
+    /* FOOTER */
+    footer { background:var(--azul); color:rgba(255,255,255,.4); text-align:center; padding:24px; font-size:12px; line-height:1.9; }
+    footer a { color:rgba(255,255,255,.5); text-decoration:none; }
+    .footer-legal { color:rgba(255,255,255,.2); font-size:11px; margin-top:8px; max-width:680px; margin-left:auto; margin-right:auto; line-height:1.7; }
+
+    @media(max-width:600px){
+      .preco-por { font-size:44px; }
+      .btn-cta   { padding:15px 36px; width:100%; max-width:320px; text-align:center; }
+      .step      { flex-basis:100%; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <nav class="nav">
+    <span class="nav-logo">Dr. <span>Saúde</span> Online</span>
+  </nav>
+
+  <div class="hero-inner">
+    <div class="badge">⚕ Consulta 100% Online</div>
+
+    <h1>Consulta Médica Online<br>com <span class="destaque">Atestado Incluso</span><sup>*</sup></h1>
+
+    <p class="hero-sub">Atendimento rápido, sem filas, do conforto da sua casa.<br>Médico disponível agora · Resultado imediato.</p>
+
+    <div class="preco-bloco">
+      <div>
+        <div class="preco-de">De R$250,00</div>
+        <div class="preco-por"><sup class="rs">R$</sup>99<sup class="cts">,90</sup></div>
+        <div class="preco-pix">pagamento único · PIX</div>
+      </div>
+      <a href="/cadastro" class="btn-cta">Realizar Consulta Agora →</a>
+    </div>
+
+    <p class="garantia">🔒 Dados protegidos · Ambiente seguro</p>
+    <p class="nota-legal">* Atestado sujeito à avaliação do médico responsável.</p>
+  </div>
+</section>
+
+<section class="selos">
+  <div class="selos-inner">
+    <div class="selo"><div class="selo-icon">⚡</div>Atendimento em até 1h</div>
+    <div class="selo"><div class="selo-icon">📋</div>Atestado médico<sup style="font-size:9px">*</sup></div>
+    <div class="selo"><div class="selo-icon">🔒</div>Sigilo garantido</div>
+    <div class="selo"><div class="selo-icon">💊</div>Prescrição digital</div>
+    <div class="selo"><div class="selo-icon">📱</div>Acesso pelo celular</div>
+  </div>
+</section>
+
+<section>
+  <div class="secao">
+    <h2 class="sec-titulo">Por que escolher nossa plataforma?</h2>
+    <p class="sec-sub">Cuidado médico de qualidade, onde e quando você precisar.</p>
+    <div class="grid">
+      <div class="card"><div class="card-icon">🏥</div><h3>Médicos Credenciados</h3><p>Profissionais registrados no CRM, selecionados com rigor e experiência comprovada.</p></div>
+      <div class="card"><div class="card-icon">⚡</div><h3>Rapidez e Praticidade</h3><p>Sem filas, sem deslocamento. Consulta em minutos pelo celular ou computador.</p></div>
+      <div class="card"><div class="card-icon">📄</div><h3>Atestado e Receita</h3><p>Documentos digitais com validade legal, emitidos conforme avaliação médica.</p></div>
+      <div class="card"><div class="card-icon">🔐</div><h3>Privacidade Total</h3><p>Informações tratadas com sigilo absoluto, em conformidade com a LGPD.</p></div>
+      <div class="card"><div class="card-icon">💳</div><h3>Pagamento Seguro</h3><p>PIX com confirmação instantânea via Asaas. Sem cartão, sem burocracia.</p></div>
+      <div class="card"><div class="card-icon">🗓️</div><h3>Todos os Dias</h3><p>Atendimento disponível sete dias por semana, incluindo feriados nacionais.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="como">
+  <div class="como-inner">
+    <h2 class="sec-titulo">Como funciona?</h2>
+    <p class="sec-sub">Simples, rápido e sem complicação</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><h4>Cadastro</h4><p>Preencha seus dados de forma rápida e segura</p></div>
+      <div class="step"><div class="step-n">2</div><h4>Pagamento</h4><p>PIX gerado na hora · confirmação automática</p></div>
+      <div class="step"><div class="step-n">3</div><h4>Acesso</h4><p>Receba o link por email e na tela</p></div>
+      <div class="step"><div class="step-n">4</div><h4>Consulta</h4><p>Fale com o médico e receba seus documentos</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-final">
+  <h2 class="sec-titulo">Pronto para cuidar da sua saúde?</h2>
+  <p>Consulta médica online completa por apenas R$99,90. Rápido, seguro e sem sair de casa.</p>
+  <a href="/cadastro" class="btn-cta">Realizar Consulta Agora →</a>
+</section>
+
+<footer>
+  <p>© 2025 Dr. Saúde Online · CNPJ 00.000.000/0001-00</p>
+  <p><a href="#">Política de Privacidade</a> · <a href="#">Termos de Uso</a></p>
+  <div class="footer-legal">
+    * Atestado médico sujeito à avaliação e critério do médico responsável pelo atendimento.
+    Este serviço não substitui emergências médicas.
+  </div>
+</footer>
+</body>
+</html>

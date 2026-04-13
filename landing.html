@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dados do Paciente | Consulta Médica Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--azul:#1a3a4a;--verde:#2a7a5a;--ouro:#c8a96e;--creme:#faf8f5;--borda:#e0e4ea;--cinza:#6b7280;--erro:#dc2626}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--creme);min-height:100vh;display:flex;flex-direction:column}
+    /* HEADER CENTRALIZADO */
+    header{background:var(--azul);padding:16px 24px;text-align:center}
+    .logo{font-family:'Playfair Display',serif;color:#fff;font-size:17px;text-decoration:none;display:inline-block}
+    .logo span{color:var(--ouro)}
+    .steps-bar{background:#fff;border-bottom:1px solid var(--borda);padding:14px 24px}
+    .steps-inner{max-width:640px;margin:0 auto;display:flex;align-items:center}
+    .si{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--cinza)}
+    .sn{width:26px;height:26px;border-radius:50%;border:2px solid var(--borda);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500}
+    .si.ativo .sn{background:var(--azul);border-color:var(--azul);color:#fff}
+    .si.ativo .sl{color:var(--azul);font-weight:500}
+    .ss{flex:1;height:1px;background:var(--borda);margin:0 12px}
+    main{flex:1;display:flex;justify-content:center;padding:36px 24px}
+    .card{background:#fff;border:1px solid var(--borda);border-radius:20px;padding:40px;width:100%;max-width:640px;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+    @media(max-width:620px){.card{padding:24px 18px}}
+    .card-titulo{font-family:'Playfair Display',serif;font-size:24px;color:var(--azul);margin-bottom:4px}
+    .card-sub{color:var(--cinza);font-size:13px;margin-bottom:26px}
+    .sec{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--cinza);font-weight:500;margin:22px 0 12px;display:flex;align-items:center;gap:8px}
+    .sec::after{content:'';flex:1;height:1px;background:var(--borda)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:520px){.row{grid-template-columns:1fr}}
+    .mb{margin-bottom:14px}
+    label{display:block;font-size:11px;font-weight:500;color:var(--azul);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
+    label .ob{color:var(--erro)}
+    label .op{color:var(--cinza);font-weight:400;text-transform:none;letter-spacing:0;font-size:11px}
+    input,select{width:100%;padding:11px 13px;border:1.5px solid var(--borda);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1c1c1e;background:#fff;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none}
+    input:focus,select:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(26,58,74,.08)}
+    input.er,select.er{border-color:var(--erro);background:#fff8f8}
+    select:disabled{background:#f0f4f8;color:var(--cinza)}
+    .sw{position:relative}
+    .sw::after{content:'▾';position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--cinza);font-size:13px}
+    .me{color:var(--erro);font-size:11px;margin-top:3px;display:none}
+    .me.v{display:block}
+    .eg{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:12px 14px;color:var(--erro);font-size:13px;margin-bottom:16px;display:none}
+    .aviso{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:12px 14px;font-size:12px;color:#0369a1;line-height:1.6;margin:16px 0}
+    .btn{width:100%;background:linear-gradient(135deg,var(--verde),#1e5e43);color:#fff;border:none;padding:15px;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer;box-shadow:0 4px 16px rgba(42,122,90,.35);transition:opacity .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:10px}
+    .btn:hover{opacity:.92;transform:translateY(-1px)}
+    .btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+    .spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:none}
+    @keyframes sp{to{transform:rotate(360deg)}}
+    footer{text-align:center;padding:20px;font-size:12px;color:var(--cinza)}
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">Dr. <span>Saúde</span> Online</a>
+</header>
+
+<div class="steps-bar">
+  <div class="steps-inner">
+    <div class="si ativo"><div class="sn">1</div><span class="sl">Dados</span></div>
+    <div class="ss"></div>
+    <div class="si"><div class="sn">2</div><span class="sl">Pagamento</span></div>
+    <div class="ss"></div>
+    <div class="si"><div class="sn">3</div><span class="sl">Acesso</span></div>
+  </div>
+</div>
+
+<main>
+<div class="card">
+  <h1 class="card-titulo">Seus dados</h1>
+  <p class="card-sub">Preencha corretamente — enviados para registrar na plataforma médica</p>
+  <div class="eg" id="eg"></div>
+
+  <form id="form" novalidate>
+    <div class="sec">Dados pessoais</div>
+    <div class="mb">
+      <label for="nome">Nome completo <span class="ob">*</span></label>
+      <input type="text" id="nome" placeholder="Como consta no documento" autocomplete="name">
+      <span class="me" id="eNome"></span>
+    </div>
+    <div class="row mb">
+      <div>
+        <label for="cpf">CPF <span class="ob">*</span></label>
+        <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
+        <span class="me" id="eCpf"></span>
+      </div>
+      <div>
+        <label for="nasc">Data de nascimento <span class="ob">*</span></label>
+        <input type="date" id="nasc">
+        <span class="me" id="eNasc"></span>
+      </div>
+    </div>
+
+    <div class="sec">Contato</div>
+    <div class="row mb">
+      <div>
+        <label for="email">E-mail <span class="ob">*</span></label>
+        <input type="email" id="email" placeholder="seu@email.com" autocomplete="email">
+        <span class="me" id="eEmail"></span>
+      </div>
+      <div>
+        <label for="tel">Celular / WhatsApp <span class="ob">*</span></label>
+        <input type="tel" id="tel" placeholder="(00) 00000-0000" maxlength="15" inputmode="numeric">
+        <span class="me" id="eTel"></span>
+      </div>
+    </div>
+
+    <div class="sec">Endereço</div>
+    <div class="row mb">
+      <div>
+        <label for="estado">Estado <span class="ob">*</span></label>
+        <div class="sw">
+          <select id="estado" onchange="carregarCidades()">
+            <option value="">Selecione o estado</option>
+            <option value="AC">Acre</option><option value="AL">Alagoas</option>
+            <option value="AP">Amapá</option><option value="AM">Amazonas</option>
+            <option value="BA">Bahia</option><option value="CE">Ceará</option>
+            <option value="DF">Distrito Federal</option><option value="ES">Espírito Santo</option>
+            <option value="GO">Goiás</option><option value="MA">Maranhão</option>
+            <option value="MT">Mato Grosso</option><option value="MS">Mato Grosso do Sul</option>
+            <option value="MG">Minas Gerais</option><option value="PA">Pará</option>
+            <option value="PB">Paraíba</option><option value="PR">Paraná</option>
+            <option value="PE">Pernambuco</option><option value="PI">Piauí</option>
+            <option value="RJ">Rio de Janeiro</option><option value="RN">Rio Grande do Norte</option>
+            <option value="RS">Rio Grande do Sul</option><option value="RO">Rondônia</option>
+            <option value="RR">Roraima</option><option value="SC">Santa Catarina</option>
+            <option value="SP">São Paulo</option><option value="SE">Sergipe</option>
+            <option value="TO">Tocantins</option>
+          </select>
+        </div>
+        <span class="me" id="eEstado"></span>
+      </div>
+      <div>
+        <label for="cidade">Cidade <span class="ob">*</span></label>
+        <div class="sw">
+          <select id="cidade" disabled>
+            <option value="">Selecione o estado primeiro</option>
+          </select>
+        </div>
+        <span class="me" id="eCidade"></span>
+      </div>
+    </div>
+
+    <div class="mb">
+      <label for="end">Endereço <span class="ob">*</span> <span class="op">(rua + número)</span></label>
+      <input type="text" id="end" placeholder="Ex: Rua das Flores, 123">
+      <span class="me" id="eEnd"></span>
+    </div>
+
+    <div class="mb">
+      <label for="cep">CEP <span class="op">(opcional)</span></label>
+      <input type="text" id="cep" placeholder="00000-000" maxlength="9" inputmode="numeric">
+      <span style="font-size:11px;color:var(--cinza);margin-top:3px;display:block" id="cepStatus"></span>
+    </div>
+
+    <div class="aviso">
+      📋 Dados enviados à plataforma médica para preparar o atendimento. 🔒 Protegidos pela LGPD.
+    </div>
+
+    <button type="submit" class="btn" id="btnSub">
+      <span id="btnTxt">Continuar para Pagamento</span>
+      <div class="spin" id="spin"></div>
+    </button>
+  </form>
+</div>
+</main>
+
+<footer>Atendimento sujeito à avaliação médica · © 2025 Dr. Saúde Online</footer>
+
+<script>
+const CIDADES={AC:["Rio Branco","Cruzeiro do Sul","Sena Madureira","Tarauacá","Feijó"],AL:["Maceió","Arapiraca","Palmeira dos Índios","Rio Largo","Penedo","União dos Palmares"],AP:["Macapá","Santana","Laranjal do Jari","Oiapoque"],AM:["Manaus","Parintins","Itacoatiara","Manacapuru","Coari","Tefé"],BA:["Salvador","Feira de Santana","Vitória da Conquista","Camaçari","Juazeiro","Ilhéus","Lauro de Freitas","Barreiras"],CE:["Fortaleza","Caucaia","Juazeiro do Norte","Maracanaú","Sobral","Crato"],DF:["Brasília","Ceilândia","Taguatinga","Planaltina","Samambaia","Gama"],ES:["Vitória","Vila Velha","Cariacica","Serra","Linhares","Cachoeiro de Itapemirim"],GO:["Goiânia","Aparecida de Goiânia","Anápolis","Rio Verde","Luziânia"],MA:["São Luís","Imperatriz","Timon","Caxias","Codó","Bacabal"],MT:["Cuiabá","Várzea Grande","Rondonópolis","Sinop","Tangará da Serra"],MS:["Campo Grande","Dourados","Três Lagoas","Corumbá","Ponta Porã"],MG:["Belo Horizonte","Uberlândia","Contagem","Juiz de Fora","Betim","Montes Claros","Ribeirão das Neves","Uberaba","Governador Valadares","Ipatinga","Sete Lagoas","Divinópolis","Poços de Caldas","Pouso Alegre"],PA:["Belém","Ananindeua","Santarém","Marabá","Castanhal","Parauapebas"],PB:["João Pessoa","Campina Grande","Santa Rita","Patos","Bayeux","Sousa"],PR:["Curitiba","Londrina","Maringá","Ponta Grossa","Cascavel","São José dos Pinhais","Foz do Iguaçu","Colombo","Guarapuava","Paranaguá"],PE:["Recife","Caruaru","Olinda","Petrolina","Paulista","Garanhuns","Cabo de Santo Agostinho"],PI:["Teresina","Parnaíba","Picos","Piripiri","Floriano"],RJ:["Rio de Janeiro","São Gonçalo","Duque de Caxias","Nova Iguaçu","Niterói","Belford Roxo","Campos dos Goytacazes","Petrópolis","Volta Redonda","Macaé","Cabo Frio"],RN:["Natal","Mossoró","Parnamirim","São Gonçalo do Amarante","Macaíba","Caicó"],RS:["Porto Alegre","Caxias do Sul","Pelotas","Canoas","Santa Maria","Gravataí","Novo Hamburgo","São Leopoldo","Rio Grande","Passo Fundo","Santa Cruz do Sul"],RO:["Porto Velho","Ji-Paraná","Ariquemes","Vilhena","Cacoal"],RR:["Boa Vista","Rorainópolis","Caracaraí"],SC:["Florianópolis","Joinville","Blumenau","São José","Chapecó","Itajaí","Criciúma","Jaraguá do Sul","Lages","Palhoça","Balneário Camboriú","Brusque","Tubarão"],SP:["São Paulo","Guarulhos","Campinas","São Bernardo do Campo","Santo André","São José dos Campos","Osasco","Ribeirão Preto","Sorocaba","Santos","São José do Rio Preto","Mogi das Cruzes","Diadema","Jundiaí","Piracicaba","Bauru","Taubaté","Sumaré","Franca","Araraquara","São Carlos","Presidente Prudente","Americana","Marília"],SE:["Aracaju","Nossa Senhora do Socorro","Lagarto","Itabaiana","São Cristóvão"],TO:["Palmas","Araguaína","Gurupi","Porto Nacional","Paraíso do Tocantins"]};
+
+function carregarCidades(){
+  const uf=document.getElementById('estado').value;
+  const sel=document.getElementById('cidade');
+  sel.innerHTML='';sel.disabled=!uf;
+  if(!uf){sel.innerHTML='<option value="">Selecione o estado primeiro</option>';return;}
+  const lista=CIDADES[uf]||[];
+  sel.innerHTML='<option value="">Selecione a cidade</option>';
+  lista.sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
+  fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`)
+    .then(r=>r.ok?r.json():null).then(data=>{
+      if(!data)return;
+      const v=sel.value;
+      sel.innerHTML='<option value="">Selecione a cidade</option>';
+      data.forEach(m=>{const o=document.createElement('option');o.value=m.nome;o.textContent=m.nome;sel.appendChild(o);});
+      if(v)sel.value=v;
+    }).catch(()=>{});
+}
+
+document.getElementById('cep').addEventListener('input',function(){
+  let v=this.value.replace(/\D/g,'').slice(0,8);
+  if(v.length>5)v=v.slice(0,5)+'-'+v.slice(5);
+  this.value=v;
+  if(v.replace(/\D/g,'').length===8)buscarCep(v.replace(/\D/g,''));
+});
+
+async function buscarCep(num){
+  const st=document.getElementById('cepStatus');
+  st.textContent='Buscando...';st.style.color='var(--cinza)';
+  try{
+    const r=await fetch(`/api/cep/${num}`);const d=await r.json();
+    if(!r.ok||d.erro){st.textContent='CEP não encontrado';st.style.color='var(--erro)';return;}
+    if(d.logradouro)document.getElementById('end').value=d.logradouro;
+    if(d.uf){document.getElementById('estado').value=d.uf;await new Promise(res=>{carregarCidades();setTimeout(res,600);});}
+    if(d.localidade){const sel=document.getElementById('cidade');for(let o of sel.options){if(o.value===d.localidade||o.text===d.localidade){sel.value=o.value;break;}}}
+    st.textContent='✓ Preenchido automaticamente';st.style.color='var(--verde)';
+  }catch(e){st.textContent='';}
+}
+
+document.getElementById('cpf').addEventListener('input',function(){
+  let v=this.value.replace(/\D/g,'').slice(0,11);
+  v=v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+  this.value=v;
+});
+document.getElementById('tel').addEventListener('input',function(){
+  let v=this.value.replace(/\D/g,'').slice(0,11);
+  this.value=v.length<=10?v.replace(/(\d{2})(\d{4})(\d{0,4})/,'($1) $2-$3'):v.replace(/(\d{2})(\d{5})(\d{0,4})/,'($1) $2-$3');
+});
+
+function okCPF(c){c=c.replace(/\D/g,'');if(c.length!==11||/^(\d)\1+$/.test(c))return false;let s=0;for(let i=0;i<9;i++)s+=parseInt(c[i])*(10-i);let r=(s*10)%11;if(r>=10)r=0;if(r!==parseInt(c[9]))return false;s=0;for(let i=0;i<10;i++)s+=parseInt(c[i])*(11-i);r=(s*10)%11;if(r>=10)r=0;return r===parseInt(c[10]);}
+
+function setE(campo,msg){
+  const e=document.getElementById('e'+campo);
+  if(e){e.textContent=msg;e.classList.add('v');}
+  const f=document.getElementById(campo.toLowerCase())||document.getElementById(campo.charAt(0).toLowerCase()+campo.slice(1));
+  if(f)f.classList.add('er');
+  return false;
+}
+function clrE(campo){
+  const e=document.getElementById('e'+campo);if(e)e.classList.remove('v');
+  const f=document.getElementById(campo.toLowerCase())||document.getElementById(campo.charAt(0).toLowerCase()+campo.slice(1));
+  if(f)f.classList.remove('er');
+}
+
+document.getElementById('form').addEventListener('submit',async function(e){
+  e.preventDefault();
+  ['Nome','Cpf','Email','Tel','Nasc','Estado','Cidade','End'].forEach(clrE);
+  document.getElementById('eCidade').classList.remove('v');
+  document.getElementById('eEstado').classList.remove('v');
+  document.getElementById('eg').style.display='none';
+
+  const nome=document.getElementById('nome').value.trim();
+  const cpf=document.getElementById('cpf').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const tel=document.getElementById('tel').value.trim();
+  const nasc=document.getElementById('nasc').value;
+  const est=document.getElementById('estado').value;
+  const cid=document.getElementById('cidade').value;
+  const end=document.getElementById('end').value.trim();
+  const cep=document.getElementById('cep').value.trim();
+
+  let ok=true;
+  if(!nome||nome.trim().split(/\s+/).length<2)ok=setE('Nome','Informe nome e sobrenome');
+  if(!okCPF(cpf))ok=setE('Cpf','CPF inválido');
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))ok=setE('Email','E-mail inválido');
+  if(!tel||tel.replace(/\D/g,'').length<10)ok=setE('Tel','Telefone inválido');
+  if(!nasc)ok=setE('Nasc','Informe a data');
+  if(!est){document.getElementById('eEstado').textContent='Selecione o estado';document.getElementById('eEstado').classList.add('v');document.getElementById('estado').classList.add('er');ok=false;}
+  if(!cid){document.getElementById('eCidade').textContent='Selecione a cidade';document.getElementById('eCidade').classList.add('v');document.getElementById('cidade').classList.add('er');ok=false;}
+  if(!end)ok=setE('End','Informe o endereço');
+  if(!ok)return;
+
+  const btn=document.getElementById('btnSub');
+  document.getElementById('btnTxt').textContent='Registrando seus dados...';
+  document.getElementById('spin').style.display='block';
+  btn.disabled=true;
+
+  try{
+    const r=await fetch('/cadastro',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({nome,cpf,email,telefone:tel,data_nascimento:nasc,estado:est,cidade:cid,endereco:end,cep:cep||''})});
+    const d=await r.json();
+    if(d.redirect){window.location.href=d.redirect;}
+    else{throw new Error(d.erro||'Erro ao processar.');}
+  }catch(err){
+    const eg=document.getElementById('eg');eg.textContent=err.message;eg.style.display='block';
+    document.getElementById('btnTxt').textContent='Continuar para Pagamento';
+    document.getElementById('spin').style.display='none';btn.disabled=false;
+  }
+});
+</script>
+</body>
+</html>
